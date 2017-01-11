@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 08, 2017 at 02:27 AM
+-- Generation Time: Jan 11, 2017 at 01:07 PM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -57,15 +57,23 @@ INSERT INTO `categories` (`id`, `parent`, `name`, `slug`, `meta_description`, `m
 --
 
 CREATE TABLE IF NOT EXISTS `contacts` (
-  `id` int(11) NOT NULL,
+`id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `phone` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `message` text NOT NULL,
   `status` int(1) NOT NULL DEFAULT '0',
+  `reply` int(11) NOT NULL DEFAULT '0',
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `contacts`
+--
+
+INSERT INTO `contacts` (`id`, `name`, `phone`, `email`, `message`, `status`, `reply`, `updated_at`, `created_at`) VALUES
+(1, 'MFAdib', '081282839585', 'mfuadadib@gmail.com', 'ini messagenya', 1, 0, '2017-01-11 07:07:46', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -438,8 +446,8 @@ CREATE TABLE IF NOT EXISTS `testimonials` (
 --
 
 INSERT INTO `testimonials` (`id`, `user_id`, `testimony`, `rate`, `status`, `updated_at`, `created_at`) VALUES
-(1, 6, 'Cras ultricies ligula sed magna dictum porta. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.', 0, 1, '2017-01-05 01:31:37', '0000-00-00 00:00:00'),
-(2, 1, 'Cras ultricies ligula sed magna dictum porta. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.', 0, 1, '2017-01-05 01:31:41', '0000-00-00 00:00:00'),
+(1, 6, 'Cras ultricies ligula sed magna dictum porta. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.', 0, 1, '2017-01-11 06:14:45', '0000-00-00 00:00:00'),
+(2, 1, 'Cras ultricies ligula sed magna dictum porta. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.', 0, 1, '2017-01-11 06:14:54', '0000-00-00 00:00:00'),
 (3, 8, 'Cras ultricies ligula sed magna dictum porta. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Quisque velit nisi, pretium ut lacinia in, elementum id enim. Curabitur non nulla sit amet nisl tempus convallis quis ac lectus.', 0, 1, '2017-01-05 01:38:47', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
@@ -466,7 +474,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `remember_token`, `status`, `actived`, `confirm`, `created_at`, `updated_at`) VALUES
-(1, 'MFAdib', 'mfadibdev@gmail.com', '$2y$10$L8.zPP6HxPTEi49OqDu/1OW6stSnTm0VhwqTrZnG/pDS5Qa.nwBqq', 'RX1pV0d1daEdmINDB0O1MUcuIo0CMmEcI2570MY1XsQIEUpom0bNG6LJFlQQ', 1, 1, '', '2015-09-18 17:00:00', '2017-01-04 04:07:42'),
+(1, 'MFAdib', 'mfadibdev@gmail.com', '$2y$10$DqxlYFalsx/Slub4yBZ5e..cGtaEWP0jpfZId/MDiorHqUfIWsmhW', 'jUgzLuHgZJGarULoWOZPWSX8r68cbuLY7oxsxuPi3Yba4PpBOHhb45SBD5nb', 1, 1, '', '2015-09-18 17:00:00', '2017-01-11 03:15:17'),
 (6, 'Adib', 'mfuadadib@gmail.com', '$2y$10$L8.zPP6HxPTEi49OqDu/1OW6stSnTm0VhwqTrZnG/pDS5Qa.nwBqq', 'rO4TDGzk0uiiKVWmN1ZS4kfu4uqTACIFzF9A1airM2lyr8toJ5wOnKpMhpV5', 0, 1, '', '0000-00-00 00:00:00', '2016-12-30 17:18:44'),
 (8, 'mfadib', 'mfuadadib@yahoo.com', '$2y$10$GUcbP/1dwKMobSIOl.7NgOsjFazau15kaQYvsEzVTqEVYwrdtfXWe', NULL, 0, 1, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
@@ -585,6 +593,11 @@ ALTER TABLE `users`
 --
 ALTER TABLE `categories`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT for table `contacts`
+--
+ALTER TABLE `contacts`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `contents`
 --
