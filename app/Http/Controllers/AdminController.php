@@ -977,4 +977,114 @@ class AdminController extends Controller
         return view('auth.admin.settings.subscribes',compact('query','subscribes'));
     }
 
+    public function testimonials()
+    {
+        $query = $this->query;
+        $testimonials = $query->get_paginate('testimonials',20,null,'updated_at');
+        return view('auth.admin.settings.testimonials',compact('query','testimonials'));
+    }
+
+    public function testimony_status()
+    {
+        $rules = ['id'=>'required|exists:testimonials,id','status'=>'required'];
+        $valid = \Validator::make(\Request::all(),$rules);
+        if($valid->passes()){
+            $id = \Request::input('id');
+            $status = 0;
+            if(\Request::input('status') == 0){
+                $status = 1;
+            }
+            $this->query->update_data('testimonials',['id'=>$id],['status'=>$status]);
+            return \Redirect::action('AdminController@testimonials')->with('message_success','Status successfully updated');
+        }else{
+            return \Redirect::action('AdminController@testimonials')->withErrors($valid);
+        }
+    }
+
+    public function setting()
+    {
+        return view('auth.admin.settings.user');
+    }
+
+    public function setting_save()
+    {
+        $rules = [
+            'old'   => 'required',
+            'new'   => 'required',
+            'confirm'=>'required|same:new'
+        ];
+        $valid = \Validator::make(\Request::all(), $rules);
+        if($valid->passes()){
+            $old = \Request::input('old');
+            $new = \Hash::make(\Request::input('new'));
+            $query = $this->query;
+            $cek = $query->get_data('users',['email'=>Auth::user()->email]);
+            if($cek->count() == 1){
+                foreach($cek->get() as $item);
+                if(\Hash::check($old,$item->password)){
+                    $query->update_data('users',['email'=>Auth::user()->email],['password'=>$new]);
+                    return \Redirect::action('AdminController@signout')->with('message_success','Password successfully updated, please signin again');
+                }else{
+                    return \Redirect::action('AdminController@setting')->with('message_error','Your old password wrong!');
+                }
+            }else{
+                return \Redirect::action('AdminController@signout')->with('message_error','Not found your accout');
+            }
+        }else{
+            return \Redirect::action('AdminController@setting')->withErrors($valid);
+        }
+    }
+
+    public function contacts()
+    {
+        $query= $this->query;
+        $contacts = $query->get_paginate('contacts',20,null,'updated_at');
+        return view('auth.admin.settings.contacts',compact('query','contacts'));
+    }
+
+    public function contact_reply($id)
+    {
+        $query = $this->query;
+        $check = $query->get_data('contacts',['id'=>$id]);
+        if($check->count() == 1){
+            $query->update_data('contacts',['id'=>$id],['status'=>1]);
+            return view('auth.admin.settings.reply',compact('query','check'));
+        }else{
+            return \Redirect::action('AdminController@contacts')->with('message_error','Message not found');
+        }
+    }
+
+    public function contact_reply_send()
+    {
+        $rules = [
+            'id'=>'required|exists:contacts,id',
+            'email'=>'required|exists:contacts,email',
+            'name'=>'required',
+            'reply'=>'required'
+        ];
+        $valid = \Validator::make(\Request::all(),$rules);
+        if($valid->passes()){
+            $insert = [
+                'reply'=>\Request::input('reply'),
+                'name'=>\Request::input('name'),
+                'email'=>\Request::input('email')
+            ];
+            $mail = Mail::send(['html'=>'emails.reply'],$insert, function($message){
+                $message->to(\Request::input('email'),ucwords(\Request::input('name')));
+                $message->subject('Reply for your message');
+            });
+            if($mail){
+                $update = $this->query->update_data('contacts',['id'=>\Request::input('id')],['status'=>1,'reply'=>1]);
+                if($update){
+                    return \Redirect::action('AdminController@contact_reply',['id'=>\Request::input('id')])->with('message_success','reply for this message successfully sent');
+                }else{
+                    return \Redirect::action('AdminController@contact_reply',['id'=>\Request::input('id')])->with('message_error','failed to send reply, please try again');
+                }
+            }else{
+                return \Redirect::action('AdminController@contact_reply',['id'=>\Request::input('id')])->with('message_error','failed to sent reply, please try again');
+            }
+        }else{
+            return \Redirect::action('AdminController@contact_reply',['id'=>\Request::input('id')])->withErrors($valid);
+        }
+    }
 }

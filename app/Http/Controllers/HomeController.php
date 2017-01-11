@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Libs\UserQuery;
 
 use App\Product;
+
 class HomeController extends Controller
 {
 	private $query;
@@ -40,6 +41,34 @@ class HomeController extends Controller
         $query = $this->query;
         $faqs = $query->get_data('faqs',['status'=>1]);
         return view('contents.main.faqs',compact('query','faqs'));
+    }
+
+    public function contact_send()
+    {
+        $rules = [
+            'name'=>'required',
+            'email'=>'required|email',
+            'phone'=>'numeric',
+            'message'=>'required'
+        ];
+        $valid = \Validator::make(\Request::all(), $rules);
+        if($valid->passes()){
+            $name = \Request::input('name');
+            $email = \Request::input('email');
+            $phone = \Request::input('phone');
+            $message = \Request::input('message');
+            $query = $this->query;
+            $data = [
+                'name'=>$name,
+                'email'=>$email,
+                'phone'=>$phone,
+                'message'=>$message
+            ];
+            $query->insert_data('contacts',$data);
+            return \Redirect::action('HomeController@index')->with('message_success','Your message successfully sent');
+        }else{
+            return \Redirect::action('HomeController@index')->withErrors($valid);
+        }
     }
 
 }

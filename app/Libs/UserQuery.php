@@ -358,6 +358,15 @@ class UserQuery{
 		return $data;
 	}
 
+	public function get_read($stts)
+	{
+		$data = 'Unread';
+		if($stts == 1){
+			$data = 'Read';
+		}
+		return $data;
+	}
+
 	public function get_usertype($type)
 	{
 		$data = 'User';

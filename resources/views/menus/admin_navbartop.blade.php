@@ -18,11 +18,11 @@
             <ul class="nav navbar-top-links navbar-right">
                 <!-- main dropdown -->
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <span class="top-label label label-danger">3</span><i class="fa fa-envelope fa-3x"></i>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="{{URL::action('AdminController@contacts')}}">
+                        @if($contactcount != 0)<span class="top-label label label-danger">{{$contactcount}}</span>@endif<i class="fa fa-envelope fa-3x"></i>
                     </a>
                 </li>
-
+<!-- 
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <span class="top-label label label-success">4</span>  <i class="fa fa-tasks fa-3x"></i>
@@ -34,7 +34,7 @@
                         <span class="top-label label label-warning">5</span>  <i class="fa fa-bell fa-3x"></i>
                     </a>
                 </li>
-
+ -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-3x"></i>

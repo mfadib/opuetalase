@@ -25,6 +25,7 @@ class SettingComposer
 			->with('getquery',$this->getquery())
 			->with('productlatests',$this->productlatests())
 			->with('menu_categories',$this->menu_categories())
+			->with('contactcount',$this->contactcount())
 			->with('news_categories',$this->news_categories());
 	}
 
@@ -50,6 +51,11 @@ class SettingComposer
 	public function news_categories()
 	{
 		return DB::table('news_categories')->where(['parent'=>0]);
+	}
+
+	public function contactcount()
+	{
+		return DB::table('contacts')->where(['status'=>0])->count();
 	}
 	// private function userprofile()
 	// {

@@ -44,6 +44,7 @@ Route::get('subscribe/{unique_code}','MemberController@subscribe_status');
 
 View::composer('admin','App\Composers\SettingComposer');
 View::composer('app','App\Composers\SettingComposer');
+View::composer('menus.admin_navbartop','App\Composers\SettingComposer');
 View::composer('menus.header','App\Composers\SettingComposer');
 View::composer('menus.footer','App\Composers\SettingComposer');
 
@@ -124,7 +125,13 @@ Route::group(['middleware'=>['admin']],function(){
 	Route::post('admin/setting/slider/status','AdminController@slider_status');
 	Route::get('admin/setting/subscribes','AdminController@subscribes');
 	Route::get('admin/setting/testimonials','AdminController@testimonials');
+	Route::post('admin/setting/testimonial/status','AdminController@testimony_status');
 	Route::get('admin/setting/user','AdminController@setting');
+	Route::post('admin/setting/user','AdminController@setting_save');
+
+	Route::get('admin/contacts','AdminController@contacts');
+	Route::get('admin/contact/reply/{id}','AdminController@contact_reply');
+	Route::post('admin/contact/reply','AdminController@contact_reply_send');
 
 });
 /*====== END ======*/

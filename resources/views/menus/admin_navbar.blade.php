@@ -54,6 +54,7 @@
                             <li><a href="{{URL::action('AdminController@sliders')}}">Sliders</a></li>
                             <li><a href="{{URL::action('AdminController@subscribes')}}">Subscribes</a></li>
                             <li><a href="{{URL::action('AdminController@testimonials')}}">Testimonials</a></li>
+                            <li><a href="{{URL::action('AdminController@contacts')}}">Contacts</a></li>
                         </ul>
                         <!-- second-level-items -->
                     </li>
