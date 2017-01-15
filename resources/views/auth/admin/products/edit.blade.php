@@ -18,9 +18,20 @@
 			<div class="form-group">
 				{!! Form::label('category_id','Category',['class'=>'control-label col-md-4']) !!}
               	<div class="col-md-8">
+	                {!! Form::hidden('id',$item->id,['required'=>'required']) !!}
 	                {!! Form::select('category_id',$cats,$item->category_id,['class'=>'form-control col-md-12 col-xs-12','required'=>'required']) !!}
 	                @if($errors->has())
 	                    <span class="label label-danger">{!!$errors->first('category_id')!!}</span>
+	                @endif
+              	</div>
+			</div>
+
+			<div class="form-group">
+				{!! Form::label('brand_id','Brand',['class'=>'control-label col-md-4']) !!}
+              	<div class="col-md-8">
+	                {!! Form::select('brand_id',$brands,$item->brand_id,['class'=>'form-control col-md-12 col-xs-12','required'=>'required']) !!}
+	                @if($errors->has())
+	                    <span class="label label-danger">{!!$errors->first('brand_id')!!}</span>
 	                @endif
               	</div>
 			</div>
@@ -28,7 +39,6 @@
 			<div class="form-group">
 				{!! Form::label('title','Title',['class'=>'control-label col-md-4']) !!}
               	<div class="col-md-8">
-	                {!! Form::hidden('id',$item->id,['required'=>'required']) !!}
 	                {!! Form::text('title',$item->title,['class'=>'form-control col-md-12 col-xs-12','required'=>'required','placeholder'=>'Title']) !!}
 	                @if($errors->has())
 	                    <span class="label label-danger">{!!$errors->first('title')!!}</span>
@@ -88,24 +98,34 @@
 
 			<div class="form-group">
 				<div class="col-md-4">&nbsp;</div>
-              	<div class="col-md-4">
+              	<div class="col-md-2">
 		            <div class="checkbox">
 		                <label>
-		                  <input name="recommended" value="{{$item->recommended}}" @if($item->recommended == 1) checked @endif type="checkbox"> Recomended
+		                  <input name="recommended" value="{{$item->recommended}}" @if($item->recommended == 1) checked @endif type="checkbox"> Top Week
 		                </label>
 		            </div>
 					@if($errors->has())
 	                    <span class="label label-danger">{!!$errors->first('recomended')!!}</span>
 	                @endif
               	</div>
-              	<div class="col-md-4">
+              	<div class="col-md-3">
 		            <div class="checkbox">
 		                <label>
-		                  <input name="special" value="1" @if($item->special == 1) checked @endif type="checkbox"> Special
+		                  <input name="special" value="1" @if($item->special == 1) checked @endif type="checkbox"> Recommended
 		                </label>
 		            </div>
 					@if($errors->has())
 	                    <span class="label label-danger">{!!$errors->first('special')!!}</span>
+	                @endif
+              	</div>
+              	<div class="col-md-3">
+		            <div class="checkbox">
+		                <label>
+		                  <input name="top_category" value="1" @if($item->top_category == 1) checked @endif type="checkbox"> Top Category
+		                </label>
+		            </div>
+					@if($errors->has())
+	                    <span class="label label-danger">{!!$errors->first('top_category')!!}</span>
 	                @endif
               	</div>
 			</div>

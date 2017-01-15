@@ -15,27 +15,27 @@
   
 @section('content')
 
-  <div class="row">
+	<div class="row">
 
             @if(Auth::check())
               @if(Auth::user()->status == 0)
                 @section('sidebar_left')
 
-                <div style="border: 1px solid #ccc">
-              <div class="f16 bg p10 cw">CATEGORY</div>
-                  <div class="p10">
-              <div><a href="{{url('products')}}">All Category ({{$query->get_data('products')->count()}})</a></div>
-              @foreach($categories as $item)
-              <div><a href="{{url('product/category/'.$item->slug)}}">{{$item->name}} ({{$query->get_data('products',['category_id'=>$item->id])->count()}})</a></div>
-              @endforeach
-                    </div>
-                </div>
-        @endsection
+		            <div style="border: 1px solid #ccc">
+  						<div class="f16 bg p10 cw">CATEGORY</div>
+		            	<div class="p10">
+							<div><a href="{{url('products')}}">All Category ({{$query->get_data('products')->count()}})</a></div>
+							@foreach($categories as $item)
+							<div><a href="{{url('product/category/'.$item->slug)}}">{{$item->name}} ({{$query->get_data('products',['category_id'=>$item->id])->count()}})</a></div>
+							@endforeach
+		              	</div>
+		            </div>
+				@endsection
               @endif
-              <div class="col-md-12 col-xs-12 p10" style="margin-top: -20px">
+          		<div class="col-md-12 col-xs-12 p10" style="margin-top: -20px">
             @else
-            <div class="col-md-3 top-nav">
-              <div style="border: 1px solid #ccc">
+	          <div class="col-md-3 top-nav">
+	            <div style="border: 1px solid #ccc">
                 <div class="f16 bg p10 cw">CATEGORY</div>
                 <div class="p10">
             <div><a href="{{url('products')}}">All Category ({{$query->get_data('products')->count()}})</a></div>
@@ -45,9 +45,9 @@
                   </div>
                   <hr>
                   @include('menus.filter')
-              </div>
-            </div>
-              <div class="col-md-9 col-xs-12 p10" style="margin-top: -20px">
+	            </div>
+	          </div>
+          		<div class="col-md-9 col-xs-12 p10" style="margin-top: -20px">
             @endif
             <div class="p10">
 
@@ -56,7 +56,7 @@
             </div>
 
             <div class="row">
-      @foreach($products as $product)
+			@foreach($products as $product)
               <div class="col-md-3 col-sm-4 col-xs-12 p10">
                 <div class="">
                   <div class="bg open-hidden" style="height: 200px; width: 100%; background: url({{url('images/products/'.$product->cover)}}); background-size: cover; background-position: center;">
@@ -91,12 +91,12 @@
               <div class="row">
                 <div class="col-xs-12 col-md-4 right p10">
                   <div class="tr">
-                  {{ $products->links() }}
+                  {{ $products->appends(['range' => \Request::get('range'),'brands'=>\Request::get('brands'),'categories'=>\Request::get('categories')])->links() }}
                   </div>
                 </div>
               </div>
 
             </div>
         </div>
-  </div>  
+	</div>	
 @endsection

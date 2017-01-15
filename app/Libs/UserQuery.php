@@ -35,6 +35,21 @@ class UserQuery{
 		return $table;
 	}
 
+	public function get_filter($range =false,$brands = false, $categories = false,$limit = 20,$order='created_at',$type='desc')
+	{
+		$table = DB::table('products');
+		if($range != false){
+			$table->whereBetween('price',[1000,$range]);
+		}
+		if(is_array($brands)){
+			$table->whereIn('brand_id',$brands);
+		}
+		if(is_array($categories)){
+			$table->whereIn('category_id',$categories);
+		}
+		return $table->simplePaginate($limit);
+	}
+
 	public function get_data_multiwhere($table,$where=null,$field='id', $opt = null){
 		$table = DB::table($table);
 		if($where != null){
@@ -384,6 +399,18 @@ class UserQuery{
 			$str = substr($texts, 0, $length).$ellipsis;
 		}
 		return $str;
+	}
+
+	public function get_rate($id)
+	{
+		$check = DB::table('reviews')->where(['product_id'=>$id]);
+		if($check->count() == 0){
+			return "<center><span class=\"rate0\" title=\"not found rate\"></span></center>";
+		}else{
+			$rate = ceil($check->avg('quality_product'));
+			$title = $this->get_review($rate);
+			return "<center><span class=\"rate$rate\" title=\"$title\"></span></center>";
+		}
 	}
 
 }

@@ -50,12 +50,15 @@
           <div class="container">
           @endif
             @include('messages.main')
-            
-            @if(Auth::check() && (!Request::is('/')) && (Auth::user()->status == 0))
-                @include('menus.member')
-            <div class="col-md-9 col-xs-12 p10" style="margin-top: -20px">
+            @if(Request::is('/'))
+              <div class="col-md-12 col-xs-12 p10" style="margin-top: -20px">
             @else
-            <div class="col-md-12 col-xs-12 p10" style="margin-top: -20px">
+              @if(Auth::check() && (!Request::is('product/detail/*')) && (Auth::user()->status == 0))
+                  @include('menus.member')
+              <div class="col-md-9 col-xs-12 p10" style="margin-top: -20px">
+              @else
+              <div class="col-md-12 col-xs-12 p10" style="margin-top: -20px">
+              @endif
             @endif
                 @yield("content") 
             </div>
@@ -65,10 +68,12 @@
           </div> <!-- Container -->
           @endif
         </div>
+        <div class="container">
+        @yield("content_else")
+        </div>
       <div id="footer" class="fops mt20">
         @include("menus.footer")
       </div>
-
     </body>
 </html>
 @yield("footer")
@@ -124,9 +129,39 @@
 
 
 <script type="text/javascript">
-  $(".rate").rateYo({
+  $(".rate0").rateYo({
     starWidth: "15px",
-    rating: 3.5,
+    rating: 0,
+    readOnly: true,
+    // ratedFill: "#d30000"
+  });
+  $(".rate1").rateYo({
+    starWidth: "15px",
+    rating: 1,
+    readOnly: true,
+    // ratedFill: "#d30000"
+  });
+$(".rate2").rateYo({
+    starWidth: "15px",
+    rating: 2,
+    readOnly: true,
+    // ratedFill: "#d30000"
+  });
+$(".rate3").rateYo({
+    starWidth: "15px",
+    rating: 3,
+    readOnly: true,
+    // ratedFill: "#d30000"
+  });
+$(".rate4").rateYo({
+    starWidth: "15px",
+    rating: 4,
+    readOnly: true,
+    // ratedFill: "#d30000"
+  });
+$(".rate5").rateYo({
+    starWidth: "15px",
+    rating: 5,
     readOnly: true,
     // ratedFill: "#d30000"
   });

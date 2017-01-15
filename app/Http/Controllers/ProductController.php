@@ -25,7 +25,6 @@ class ProductController extends Controller
 
     public function index()
     {
-
         $query = $this->query;
         $categories = Category::all();
         $products = Product::simplePaginate(20);
@@ -41,34 +40,28 @@ class ProductController extends Controller
             $cat_id = $query->get_field_data('products',['slug'=>$slug],'category_id');
             $id = $query->get_field_data('products',['slug'=>$slug]);
             $reviews = $query->get_data('reviews',['product_id'=>$id,'status'=>1]);
-            $relations = $query->get_data('products',['category_id'=>$cat_id],['whereNotIn'=>['slug'=>[$slug]],'orderByRaw'=>\DB::raw('RAND()'),'take'=>3]);
+            $relations = $query->get_data('products',['category_id'=>$cat_id],['whereNotIn'=>['slug'=>[$slug]],'orderByRaw'=>\DB::raw('RAND()'),'take'=>4]);
             $images = $query->get_data('product_images',['product_id'=>$id]);
             $url = URL::action('ProductController@detail',['slug'=>$slug]);
             $shares = Share::load($url)->services('email','gplus','twitter','facebook');
-            return view('contents.products.detail',compact(['categories','product','relations','query','reviews','shares','images']));
+            return view('contents.products.detail',compact(['categories','product','relations','query','reviews','shares','images','cat_id']));
         }else{
             return \Redirect::action('ProductController@index')->with('message_error','Product not found');
         }
     }
 
-    // public function search()
-    // {
-    //     $query = $this->query;
-    //     $categories = Category::all();
-    //     $product = $query->get_data('products',['slug'=>$slug]);
-    //     if($product->count() == 1){
-    //         $cat_id = $query->get_field_data('products',['slug'=>$slug],'category_id');
-    //         $id = $query->get_field_data('products',['slug'=>$slug]);
-    //         $reviews = $query->get_data('reviews',['product_id'=>$id,'status'=>1]);
-    //         $relations = $query->get_data('products',['category_id'=>$cat_id],['whereNotIn'=>['slug'=>[$slug]],'orderByRaw'=>\DB::raw('RAND()'),'take'=>3]);
-    //         $images = $query->get_data('product_images',['product_id'=>$id]);
-    //         $url = URL::action('ProductController@detail',['slug'=>$slug]);
-    //         $shares = Share::load($url)->services('email','gplus','twitter','facebook');
-    //         return view('contents.products.detail',compact(['categories','product','relations','query','reviews','shares','images']));
-    //     }else{
-    //         return \Redirect::action('ProductController@index')->with('message_error','Product not found');
-    //     }
-    // }
+    public function filter()
+    {
+        $query = $this->query;
+        $range = \Request::input('range');
+        $brands = \Request::input('brands');
+        $cat = \Request::input('categories');
+        $query = $this->query;
+        $categories = Category::all();
+        $products = $query->get_filter($range,$brands,$cat);
+        // return $brands;
+        return view('contents.products.index',compact(['categories','products','query']));
+    }
 
     public function category($slug)
     {
