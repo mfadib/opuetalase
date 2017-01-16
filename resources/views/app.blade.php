@@ -24,7 +24,9 @@
       <link rel="stylesheet" href="{{URL::asset('assets/css/fonts.css')}}">
 
       <!-- Script -->
-      <script src="{{URL::asset('assets/js/jquery.js')}}"></script>
+      <!-- <script src="{{URL::asset('assets/js/jquery.js')}}"></script> -->
+      <script src="{{URL::asset('assets/js/jquery-3.1.1.min.js')}}"></script>
+      <!-- <script src="{{URL::asset('assets/js/jquery-ui.min.js')}}"></script> -->
       <script src="{{URL::asset('assets/js/jquery-ui.js')}}"></script>
       <script src="{{URL::asset('assets/js/custom.js')}}"></script>
       <script src="{{URL::asset('assets/css/bs/js/bootstrap.js')}}"></script>

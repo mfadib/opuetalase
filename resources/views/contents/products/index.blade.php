@@ -30,7 +30,6 @@
               @endforeach
                     </div>
                 </div>
-        @endsection
               @endif
               <div class="col-md-12 col-xs-12 p10" style="margin-top: -20px">
             @else
@@ -64,7 +63,7 @@
                       <div class="cw">
                         <div class="wicon right">
                           <div class="mr10 mt10" style="margin-left: 40px;">
-                            <span class="fa-stack fa-lg open-btn-compare"><a href="{{url('product/detail/'.$product->slug)}}" title="Product detail" class="cw">
+                            <span class="fa-stack fa-lg open-btn-compare"><a href="{{URL::action('ProductController@detail',['slug'=>$product->slug])}}" title="Product detail" class="cw">
                               <i class="fa fa-circle-thin fa-stack-2x"></i>
                               <i class="fa fa-eye fa-stack-1x"></i></a>
                             </span>
@@ -80,7 +79,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="tc fprod"><a href="{{url('product/detail/'.$product->slug)}}" class="cb" title="{{$product->title}}">{{$query->get_ellipsis($product->title,20)}}</a></div>
+                  <div class="tc fprod"><a href="{{URL::action('ProductController@detail',['slug'=>$product->slug])}}" class="cb" title="{{$product->title}}">{{$query->get_ellipsis($product->title,20)}}</a></div>
                   {!!$query->get_rate($product->id)!!}
                   <div class="tc fprod"><b>{{$query->currency_format($product->price)}}</b></div>
                 </div>
