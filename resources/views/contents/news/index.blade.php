@@ -21,9 +21,9 @@
 		            <div style="border: 1px solid #ccc">
   						<div class="f16 bg p10 cw">CATEGORY</div>
 		            	<div class="p10">
-							<div><a href="{{url('news')}}">All</a></div>
+							<div><a href="{{URL::action('NewsController@index')}}">All</a></div>
 							@foreach($categories->get() as $item)
-							<div><a href="{{url('news/category/'.$item->slug)}}">{{$item->name}}</a></div>
+							<div><a href="{{URL::action('NewsController@category',['slug'=>$item->slug])}}">{{$item->name}}</a></div>
 							@endforeach
 		              	</div>
 		            </div>
@@ -35,9 +35,9 @@
 	            <div style="border: 1px solid #ccc">
 	            	<div class="f16 bg p10 cw">CATEGORY</div>
 	            	<div class="p10">
-						<div><a href="{{url('news')}}">All</a></div>
+						<div><a href="{{URL::action('NewsController@index')}}">All</a></div>
 						@foreach($categories->get() as $item)
-						<div><a href="{{url('news/category/'.$item->slug)}}">{{$item->name}}</a></div>
+						<div><a href="{{URL::action('NewsController@category',['slug'=>$item->slug])}}">{{$item->name}}</a></div>
 						@endforeach
 	              	</div>
 	            </div>
@@ -56,7 +56,7 @@
 		                      	</div>
 		                      	<div class="mr10">
 		                        	<div class="pull-right">
-		                      			<?php $shares = Share::load(url('news/detail/'.$item->slug))->services('email','gplus','twitter','facebook');?>
+		                      			<?php $shares = Share::load(URL::action('NewsController@detail',['slug'=>$item->slug]))->services('email','gplus','twitter','facebook');?>
 			                        	<a href="{{$shares['email']}}" title="{{$item->title}}" class="btn btn-default btn-xs"><i class="fa fa-envelope-o"></i> Email</a>
 										<a href="{{$shares['facebook']}}" title="{{$item->title}}" class="btn btn-default btn-xs"><i class="fa fa-facebook"></i> Facebook</a>
 										<a href="{{$shares['twitter']}}" title="{{$item->title}}" class="btn btn-default btn-xs"><i class="fa fa-twitter"></i> Twitter</a>
@@ -70,11 +70,11 @@
 
               	<div class="row mt20">
 	                <div class="col-md-5">
-	                  	<div style="height: 200px; background: url({{url('images/news/'.$item->image)}}) center; background-size: cover"></div>
+	                  	<div style="height: 200px; background: url({{URL::asset('images/news/'.$item->image)}}) center; background-size: cover"></div>
 	                </div>
 	                <div class="col-md-7 tj">
 	                	{!! $item->brief !!}
-	                  	<a href="{{url('news/detail/'.$item->slug)}}"><div class="mt20 right">Read More <span class="fa fa-angle-double-right"></span></div></a>
+	                  	<a href="{{URL::action('NewsController@detail',['slug'=>$item->slug])}}"><div class="mt20 right">Read More <span class="fa fa-angle-double-right"></span></div></a>
 	                </div>
               	</div>
             </div>

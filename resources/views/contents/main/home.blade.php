@@ -119,27 +119,7 @@
           @foreach($recommendeds->get() as $item)
           <div class="col-md-3 col-sm-6 bdash" style="height: 300px;">
             <div class="tc f16 tc"><a href="{{URL::action('ProductController@category',['slug'=>$query->get_field_data('categories',['id'=>$item->category_id],'slug')])}}" title="Category" class="cb">{{$query->get_field_data('categories',['id'=>$item->category_id],'name')}}</a></div>
-            <div class="bg2 open-hidden" style="height: 200px; background: url({{url('images/products/'.$item->cover)}}); background-size: cover; background-position: center;">
-              <div class="this-hidden none" style="background: rgba(0,0,0,0.4); height: 100%; width: 100%;">
-                <div class="cw">
-                  <div class="wicon right">
-                    <div class="mr10 mt10" style="margin-left: 40px;">
-                      <span class="fa-stack fa-lg open-btn-compare"><a href="{{url('product/detail/'.$item->slug)}}" title="Product detail" class="cw">
-                        <i class="fa fa-circle-thin fa-stack-2x"></i>
-                        <i class="fa fa-eye fa-stack-1x"></i></a>
-                      </span>
-                    </div>
-
-                    <div style="margin-top: -36px">
-                      <span class="fa-stack fa-lg"><a href="{{url('product/wishlist/'.$item->slug)}}" title="Wishlist" class="cw">
-                        <i class="fa fa-circle-thin fa-stack-2x"></i>
-                        <i class="fa fa-heart fa-stack-1x"></i></a>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
             <div class="mt5">
 
               <div class="tc fprod">{{$query->get_ellipsis($item->title,30)}}</div>
@@ -166,12 +146,13 @@
               @foreach($products as $item)
               <div class="col-md-3 col-sm-4 col-xs-6 p10">
                 <div class="p10 bordash">
-                  <a href="{{url('product/detail/'.$item->slug)}}"><div class="bg" style="height: 140px; width: 100%; background: url({{url('images/products/'.$item->cover)}}); background-size: cover; background-position: center;">
-                  </div>
+                  {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
+                  <a href="{{url('product/detail/'.$item->slug)}}">
                   <div class="tc fprod">{{$query->get_ellipsis($item->title,25)}}</div>
                   {!!$query->get_rate($item->id)!!}
                   <div class="tc fprod"><b>{{$query->currency_format($item->price)}}</b></div>
-                </div></a>
+                  </a>
+                </div>
               </div>
               @endforeach
               
@@ -197,27 +178,7 @@
           <div class="col-md-4">
             @foreach($query->get_data('products',['category_id'=>$cat->id],['take'=>4,'orderByRaw'=>"RAND()"])->get() as $item)
             <div class="col-sm-6 col-xs-6 p10 bordash">
-              <div class="bg open-hidden" style="height: 160px; width: 100%; background: url('{{URL::asset('images/products/'.$item->cover)}}'); background-size: cover; background-position: center;">
-                <div class="this-hidden none" style="background: rgba(0,0,0,0.4); height: 100%; width: 100%;">
-                  <div class="cw">
-                    <div class="wicon right">
-                      <div class="mr10 mt10" style="margin-left: 40px;">
-                        <span class="fa-stack fa-lg open-btn-compare"><a href="{{url('product/detail/'.$item->slug)}}" title="Product detail" class="cw">
-                          <i class="fa fa-circle-thin fa-stack-2x"></i>
-                          <i class="fa fa-eye fa-stack-1x"></i></a>
-                        </span>
-                      </div>
-
-                      <div style="margin-top: -36px">
-                        <span class="fa-stack fa-lg"><a href="{{url('product/wishlist/'.$item->slug)}}" title="Wishlist" class="cw">
-                          <i class="fa fa-circle-thin fa-stack-2x"></i>
-                          <i class="fa fa-heart fa-stack-1x"></i></a>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
               <div class="f10">
                 <div class="tc fprod">{{$query->get_ellipsis($item->title,15)}}</div>
                 {!!$query->get_rate($item->id)!!}
@@ -230,28 +191,7 @@
           <div class="col-md-4">
             @foreach($query->get_data('products',['category_id'=>$cat->id,'top_category'=>1])->get() as $item)
             <div class="col-sm-12 p20 col-xs-12"> <!--  style="height: 520px" -->
-              <div class="bg open-hidden" style="min-height: 240px; width: 100%; background: url('{{URL::asset('images/products/'.$item->cover)}}'); background-size: cover; background-position: center;">
-                <div class="this-hidden none" style="background: rgba(0,0,0,0.4); height: 100%; width: 100%;">
-                  <div class="cw">
-                    <div class="wicon right">
-                      <div class="mr10 mt10" style="margin-left: 40px;">
-                        <span class="fa-stack fa-lg open-btn-compare"><a href="{{url('product/detail/'.$item->slug)}}" title="Product detail" class="cw">
-                          <i class="fa fa-circle-thin fa-stack-2x"></i>
-                          <i class="fa fa-eye fa-stack-1x"></i></a>
-                        </span>
-                      </div>
-
-                      <div style="margin-top: -36px">
-                        <span class="fa-stack fa-lg"><a href="{{url('product/wishlist/'.$item->slug)}}" title="Wishlist" class="cw">
-                          <i class="fa fa-circle-thin fa-stack-2x"></i>
-                          <i class="fa fa-heart fa-stack-1x"></i></a>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+              {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover),"240px") !!}
               <div class="f12">
                 <div class="tc fprod">{{$query->get_ellipsis($item->title,30)}}</div>
                 {!!$query->get_rate($item->id)!!}
@@ -267,27 +207,7 @@
           <div class="col-md-4">
             @foreach($query->get_data('products',['category_id'=>$cat->id],['take'=>4,'orderByRaw'=>"RAND()"])->get() as $item)
             <div class="col-sm-6 col-xs-6 p10 bordash">
-              <div class="bg open-hidden" style="height: 160px; width: 100%; background: url('{{URL::asset('images/products/'.$item->cover)}}'); background-size: cover; background-position: center;">
-                <div class="this-hidden none" style="background: rgba(0,0,0,0.4); height: 100%; width: 100%;">
-                  <div class="cw">
-                    <div class="wicon right">
-                      <div class="mr10 mt10" style="margin-left: 40px;">
-                        <span class="fa-stack fa-lg open-btn-compare"><a href="{{url('product/detail/'.$item->slug)}}" title="Product detail" class="cw">
-                          <i class="fa fa-circle-thin fa-stack-2x"></i>
-                          <i class="fa fa-eye fa-stack-1x"></i></a>
-                        </span>
-                      </div>
-
-                      <div style="margin-top: -36px">
-                        <span class="fa-stack fa-lg"><a href="{{url('product/wishlist/'.$item->slug)}}" title="Wishlist" class="cw">
-                          <i class="fa fa-circle-thin fa-stack-2x"></i>
-                          <i class="fa fa-heart fa-stack-1x"></i></a>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
               <div class="f10">
                 <div class="tc fprod">{{$query->get_ellipsis($item->title,15)}}</div>
                 {!!$query->get_rate($item->id)!!}
@@ -333,16 +253,14 @@
       <div class="row mt20">
         <div class="container">
         @foreach($specials->get() as $item)
-          <div class="col-sm-4 col-xs-12 p10 bordash">
-            <a href="{{URL::action('ProductController@detail',['slug'=>$item->slug])}}" title="{{$item->title}}">
-            <div class="p10 bg2" style="height: 200px; background: url({{url('images/products/'.$item->cover)}}); background-size: cover; background-position: center;"></div>
-            <div class="f10">
-              <div class="tc fprod">{{$query->get_ellipsis($item->title,50)}}</div>
-              {!!$query->get_rate($item->id)!!}
-              <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
-            </div>
-            </a>
+        <div class="col-sm-4 col-xs-6 p10 bordash">
+          {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover),"230px") !!}
+          <div class="f10">
+            <div class="tc fprod">{{$query->get_ellipsis($item->title,15)}}</div>
+            {!!$query->get_rate($item->id)!!}
+            <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
           </div>
+        </div>
         @endforeach
         </div>
       </div>

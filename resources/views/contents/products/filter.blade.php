@@ -58,27 +58,7 @@
       @foreach($products as $product)
               <div class="col-md-3 col-sm-4 col-xs-12 p10">
                 <div class="">
-                  <div class="bg open-hidden" style="height: 200px; width: 100%; background: url({{url('images/products/'.$product->cover)}}); background-size: cover; background-position: center;">
-                    <div class="this-hidden none" style="background: rgba(0,0,0,0.4); height: 100%; width: 100%;">
-                      <div class="cw">
-                        <div class="wicon right">
-                          <div class="mr10 mt10" style="margin-left: 40px;">
-                            <span class="fa-stack fa-lg open-btn-compare"><a href="{{URL::action('ProductController@detail',['slug'=>$product->slug])}}" title="Product detail" class="cw">
-                              <i class="fa fa-circle-thin fa-stack-2x"></i>
-                              <i class="fa fa-eye fa-stack-1x"></i></a>
-                            </span>
-                          </div>
-
-                          <div style="margin-top: -36px">
-                            <span class="fa-stack fa-lg"><a href="{{url('product/wishlist/'.$product->slug)}}" title="Wishlist" class="cw">
-                              <i class="fa fa-circle-thin fa-stack-2x"></i>
-                              <i class="fa fa-heart fa-stack-1x"></i></a>
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  {!! $query->get_detail_product($product->slug,URL::asset('images/products/'.$product->cover),"200px") !!}
                   <div class="tc fprod"><a href="{{URL::action('ProductController@detail',['slug'=>$product->slug])}}" class="cb" title="{{$product->title}}">{{$query->get_ellipsis($product->title,20)}}</a></div>
                   {!!$query->get_rate($product->id)!!}
                   <div class="tc fprod"><b>{{$query->currency_format($product->price)}}</b></div>
