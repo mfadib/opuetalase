@@ -111,7 +111,7 @@
       </div>
 
       <div class="row mt40" style="border-top: 1px solid #666">
-        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">RECOMMENDED PRODUCTS</div></center>
+        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">TOP OF THIS WEEK</div></center>
       </div>
 
       <div class="row">
@@ -119,30 +119,11 @@
           @foreach($recommendeds->get() as $item)
           <div class="col-md-3 col-sm-6 bdash" style="height: 300px;">
             <div class="tc f16 tc"><a href="{{URL::action('ProductController@category',['slug'=>$query->get_field_data('categories',['id'=>$item->category_id],'slug')])}}" title="Category" class="cb">{{$query->get_field_data('categories',['id'=>$item->category_id],'name')}}</a></div>
-            <div class="bg2 open-hidden" style="height: 200px; background: url({{url('images/products/'.$item->cover)}}); background-size: cover; background-position: center;">
-              <div class="this-hidden none" style="background: rgba(0,0,0,0.4); height: 100%; width: 100%;">
-                <div class="cw">
-                  <div class="wicon right">
-                    <div class="mr10 mt10" style="margin-left: 40px;">
-                      <span class="fa-stack fa-lg open-btn-compare"><a href="{{url('product/detail/'.$item->slug)}}" title="Product detail" class="cw">
-                        <i class="fa fa-circle-thin fa-stack-2x"></i>
-                        <i class="fa fa-eye fa-stack-1x"></i></a>
-                      </span>
-                    </div>
-
-                    <div style="margin-top: -36px">
-                      <span class="fa-stack fa-lg"><a href="{{url('product/wishlist/'.$item->slug)}}" title="Wishlist" class="cw">
-                        <i class="fa fa-circle-thin fa-stack-2x"></i>
-                        <i class="fa fa-heart fa-stack-1x"></i></a>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
             <div class="mt5">
 
               <div class="tc fprod">{{$query->get_ellipsis($item->title,30)}}</div>
+              {!!$query->get_rate($item->id)!!}
               <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
 
             </div>
@@ -165,12 +146,13 @@
               @foreach($products as $item)
               <div class="col-md-3 col-sm-4 col-xs-6 p10">
                 <div class="p10 bordash">
-                  <a href="{{url('product/detail/'.$item->slug)}}"><div class="bg" style="height: 140px; width: 100%; background: url({{url('images/products/'.$item->cover)}}); background-size: cover; background-position: center;">
-                  </div>
+                  {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
+                  <a href="{{url('product/detail/'.$item->slug)}}">
                   <div class="tc fprod">{{$query->get_ellipsis($item->title,25)}}</div>
-                  <center><span class="rate"></span></center>
+                  {!!$query->get_rate($item->id)!!}
                   <div class="tc fprod"><b>{{$query->currency_format($item->price)}}</b></div>
-                </div></a>
+                  </a>
+                </div>
               </div>
               @endforeach
               
@@ -185,53 +167,119 @@
         </div>
       </div>
 
+      <!-- CATEGORY SPECIAL -->
+      @foreach($categories->get() as $cat)
+      <div class="ro mt20" style="border-top: 1px solid #666">
+        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">{!!ucwords($cat->name)!!}</div></center>
+      </div>
+
+      <div class="row">
+        <div class="container">
+          <div class="col-md-4">
+            @foreach($query->get_data('products',['category_id'=>$cat->id],['take'=>4,'orderByRaw'=>"RAND()"])->get() as $item)
+            <div class="col-sm-6 col-xs-6 p10 bordash">
+              {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
+              <div class="f10">
+                <div class="tc fprod">{{$query->get_ellipsis($item->title,15)}}</div>
+                {!!$query->get_rate($item->id)!!}
+                <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
+              </div>
+            </div>
+            @endforeach
+          </div>
+
+          <div class="col-md-4">
+            @foreach($query->get_data('products',['category_id'=>$cat->id,'top_category'=>1])->get() as $item)
+            <div class="col-sm-12 p20 col-xs-12"> <!--  style="height: 520px" -->
+              {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover),"240px") !!}
+              <div class="f12">
+                <div class="tc fprod">{{$query->get_ellipsis($item->title,30)}}</div>
+                {!!$query->get_rate($item->id)!!}
+                <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
+              </div>
+              <b>Description:</b>
+              <p>{{$query->get_ellipsis($item->description,200)}}</p>
+              
+            </div>
+            @endforeach
+          </div>
+
+          <div class="col-md-4">
+            @foreach($query->get_data('products',['category_id'=>$cat->id],['take'=>4,'orderByRaw'=>"RAND()"])->get() as $item)
+            <div class="col-sm-6 col-xs-6 p10 bordash">
+              {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
+              <div class="f10">
+                <div class="tc fprod">{{$query->get_ellipsis($item->title,15)}}</div>
+                {!!$query->get_rate($item->id)!!}
+                <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
+              </div>
+            </div>
+            @endforeach
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt20">
+        <div class="container">
+          <div class="col-md-12">
+            <div class="bg" style="min-height: 240px; width: 100%; background: url('{{URL::asset('images/categories/'.$cat->image)}}'); background-size: cover; background-position: center;">
+
+              <div class="col-md-12">
+                <div class="p10 f20 col-md-4 col-md-offset-4 col-sm-offset-3 col-sm-6">
+                  <div class="tc">
+                    <b>{{ucwords($cat->name)}}</b>
+                  </div>
+                </div>
+                <div class="p10 f16 col-md-4 col-md-offset-4 col-sm-offset-3 col-sm-6" style="background: rgba(0,0,0,0.9); margin-top: 7%;">
+                  <div class="tc p10 cw" style="border: 1px solid #fff">
+                    <a href="{{URL::action('ProductController@category',['slug'=>$cat->slug])}}" title="LOOK NOW">LOOK NOW</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      @endforeach
+      <!-- END CATEGORY SPECIAL -->
+
       <!-- Recomended -->
 
       <div class="row mt40" style="border-top: 1px solid #666">
-        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">SPECIAL PRODUCTS</div></center>
+        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">RECOMMENDED PRODUCTS</div></center>
       </div>
 
       <div class="row mt20">
         <div class="container">
         @foreach($specials->get() as $item)
-          <div class="col-sm-4 col-xs-12 p10 bordash">
-            <div class="p10 bg2" style="height: 200px; background: url({{url('images/products/'.$item->cover)}}); background-size: cover; background-position: center;"></div>
-            <div class="f10">
-              <div class="tc fprod">{{$query->get_ellipsis($item->title,50)}}</div>
-              <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
-            </div>
+        <div class="col-sm-4 col-xs-6 p10 bordash">
+          {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover),"230px") !!}
+          <div class="f10">
+            <div class="tc fprod">{{$query->get_ellipsis($item->title,15)}}</div>
+            {!!$query->get_rate($item->id)!!}
+            <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
           </div>
+        </div>
         @endforeach
         </div>
       </div>
 
 
       <div class="row mt40" style="border-top: 1px solid #666">
-        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">SUPORTED BY</div></center>
+        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">NEW BRANDS</div></center>
       </div>
 
       <div class="row pt20">
         <div class="container">
-          <div class="col-md-4 col-sm-4 p10 tc">
+          @foreach($brands->get() as $brand)
+          <div class="col-md-2 col-sm-2 p10 tc">
             <div class="p10" style="border: 2px solid #666">
-              <b class="f12">SOMETHING</b><br>
-              <span class="cb2">Lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+              <b class="f12">{{$brand->name}}</b><br>
+              <span class="cb2"><img src="{{URL::asset('images/brands/'.$brand->icon)}}" alt="{{$brand->name}}"></span>
             </div>
           </div>
-
-          <div class="col-md-4 col-sm-4 p10 tc">
-            <div class="p10" style="border: 2px solid #666">
-              <b class="f12">SOMETHING</b><br>
-              <span class="cb2">Lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
-            </div>
-          </div>
-
-          <div class="col-md-4 col-sm-4 p10 tc">
-            <div class="p10" style="border: 2px solid #666">
-              <b class="f12">SOMETHING</b><br>
-              <span class="cb2">Lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
-            </div>
-          </div>
+          @endforeach
         </div>
       </div>
 

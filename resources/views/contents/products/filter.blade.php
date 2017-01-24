@@ -70,7 +70,7 @@
               <div class="row">
                 <div class="col-xs-12 col-md-4 right p10">
                   <div class="tr">
-                  {{ $products->links() }}
+                  {{ $products->appends(['range' => \Request::get('range'),'brands'=>\Request::get('brands'),'categories'=>\Request::get('categories')])->links() }}
                   </div>
                 </div>
               </div>

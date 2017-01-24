@@ -22,9 +22,9 @@
 		            <div style="border: 1px solid #ccc">
   						<div class="f16 bg p10 cw">CATEGORY</div>
 		            	<div class="p10">
-							<div><a href="{{url('news')}}">All</a></div>
+							<div><a href="{{URL::action('NewsController@index')}}">All</a></div>
 							@foreach($categories->get() as $item)
-							<div><a href="{{url('news/category/'.$item->slug)}}">{{$item->name}}</a></div>
+							<div><a href="{{URL::action('NewsController@category',['slug'=>$item->slug])}}">{{$item->name}}</a></div>
 							@endforeach
 		              	</div>
 		            </div>
@@ -36,9 +36,9 @@
 	            <div style="border: 1px solid #ccc">
 	            	<div class="f16 bg p10 cw">CATEGORY</div>
 	            	<div class="p10">
-						<div><a href="{{url('news')}}">All</a></div>
+						<div><a href="{{URL::action('NewsController@index')}}">All</a></div>
 						@foreach($categories->get() as $item)
-						<div><a href="{{url('news/category/'.$item->slug)}}">{{$item->name}}</a></div>
+						<div><a href="{{URL::action('NewsController@category',['slug'=>$item->slug])}}">{{$item->name}}</a></div>
 						@endforeach
 	              	</div>
 	            </div>
@@ -52,7 +52,7 @@
 					<div class="row">
 						<div class="row">
 							<div class="col-md-12">
-								<img src="{{url('images/news/'.$pro->image)}}" class="img img-thumbnail img-resposive" alt="{{$pro->title}}">
+								<img src="{{URL::asset('images/news/'.$pro->image)}}" class="img img-thumbnail img-resposive" alt="{{$pro->title}}">
 							</div>
 						</div>
 						<div class="row">
@@ -70,19 +70,6 @@
 					@endforeach
 				</div>
 			</div>
-			{{-- <div class="row">
-				<div class="col-md-12">
-					<h3>Related News</h3><hr>
-					<div class="row">
-						@foreach($relations->get() as $item)
-							<div class="col-md-3">
-								<img src="{{url('images/news/'.$item->image)}}" class="img img-thumbnail img-resposive" alt="{{$item->title}}">
-								<a href="{{url('news/detail/'.$item->slug)}}" title="{{$item->title}}">{{$item->title}}</a>
-							</div>
-						@endforeach
-					</div>
-				</div>
-			</div>--}}
 		</div>
 	</div>	
 @endsection

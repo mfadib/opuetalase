@@ -52,7 +52,7 @@ class AdminController extends Controller
     public function news_categories()
     {
         $query = $this->query;
-        $categories = $query->get_data('news_categories');
+        $categories = $query->get_paginate('news_categories',15);
         $cats = $query->get_data_select('news_categories',null,'No Parent');
         return view('auth.admin.news.categories',compact('query','cats','categories'));
     }
@@ -282,7 +282,9 @@ class AdminController extends Controller
             $query = $this->query;
             $filename = $query->get_field_data('profile',['id'=>1],'icon');
             if(\Request::hasFile('icon')){
-                unlink($url.$filename);
+                if(file_exists($url.$filename)) { 
+                    unlink($url.$filename);
+                }
                 $filename = 'logo.'.$image->getClientOriginalExtension();
                 if($image->move($url,$filename)){
                     $file = $url.$filename;
@@ -329,20 +331,31 @@ class AdminController extends Controller
 
     public function product_category_insert()
     {
-        $rules =['name'=>'required|unique:categories,name'];
+        $rules =['name'=>'required|unique:categories,name','image'=>'required|image'];
         $valid = \Validator::make(\Request::all(),$rules);
         if($valid->passes()){
-            $data = [
-                'parent'=>\Request::input('parent'),
-                'name'=> \Request::input('name'),
-                'slug'=> str_slug(\Request::input('name'))
-            ];
-            $insert = $this->query->insert_data('categories',$data);
-            if($insert){
-                return \Redirect::action('AdminController@product_categories')->with('message_success','Data successfully insert');
+            $image = \Request::file('image');
+            $filename = str_slug(\Request::input('name')).'-'.time().'.'.$image->getClientOriginalExtension();
+            $special = (\Request::input('special'))? 1 : 0;
+            $path = 'images/categories';
+            if($image->move($path,$filename)){
+                Image::make($path.'/'.$filename)->fit(400,400)->save($path.'/'.$filename);
+                $data = [
+                    'parent'=>\Request::input('parent'),
+                    'name'=> \Request::input('name'),
+                    'special' => $special,
+                    'image' => $filename,
+                    'slug'=> str_slug(\Request::input('name'))
+                ];
+                $insert = $this->query->insert_data('categories',$data);
+                if($insert){
+                    return \Redirect::action('AdminController@product_categories')->with('message_success','Data successfully insert');
+                }else{
+                    return \Redirect::action('AdminController@product_categories')->with('message_error','Data failed to insert');
+                }   
             }else{
-                return \Redirect::action('AdminController@product_categories')->with('message_error','Data failed to insert');
-            }                
+                return \Redirect::action('AdminController@product_categories')->with('message_error','Failed to upload image');
+            }             
         }else{
             return \Redirect::action('AdminController@product_categories')->withErrors($valid);
         }
@@ -350,16 +363,31 @@ class AdminController extends Controller
 
     public function product_category_update()
     {
-        $rules =['name'=>'required'];
+        $rules =['name'=>'required','id'=>'required|exists:categories,id'];
         $valid = \Validator::make(\Request::all(),$rules);
         if($valid->passes()){
+            $special = (\Request::input('special'))? 1 : 0;
+            $id = \Request::input('id');
+            $filename = $this->query->get_field_data('categories',['id'=>$id],'image');
+            if(\Request::hasFile('image')){
+                $image = \Request::file('image');
+                $path = 'images/categories';
+                if(file_exists($path.'/'.$filename)) { 
+                    unlink($path.'/'.$filename);
+                }
+                $filename = str_slug(\Request::input('name')).'-'.time().'.'.$image->getClientOriginalExtension();
+                $image->move($path,$filename);
+                Image::make($path.'/'.$filename)->fit(400,400)->save($path.'/'.$filename);
+            }
             $data = [
                 'id'=>\Request::input('id'),
                 'parent'=>\Request::input('parent'),
                 'name'=> \Request::input('name'),
+                'special'=>$special,
+                'image'=>$filename,
                 'slug'=> str_slug(\Request::input('name'))
             ];
-            $update = $this->query->update_data('categories',['id'=>\Request::input('id')],$data);
+            $update = $this->query->update_data('categories',['id'=>$id],$data);
             if($update){
                 return \Redirect::action('AdminController@product_categories')->with('message_success','Data successfully updated');
             }else{
@@ -375,7 +403,13 @@ class AdminController extends Controller
         $rules =['id'=>'required|exists:categories,id'];
         $valid = \Validator::make(\Request::all(),$rules);
         if($valid->passes()){
-            $delete = $this->query->delete_data('categories',['id'=>\Request::input('id')]);
+            $id = \Request::input('id');
+            $filename = $this->query->get_field_data('categories',['id'=>$id],'image');
+            $path = 'images/categories';
+            if(!empty($filename) && file_exists($path.'/'.$filename)){
+                unlink($path.'/'.$filename);
+            }
+            $delete = $this->query->delete_data('categories',['id'=>$id]);
             if($delete){
                 return \Redirect::action('AdminController@product_categories')->with('message_success','Data successfully deleted');
             }else{
@@ -389,15 +423,18 @@ class AdminController extends Controller
     public function product_add()
     {
         $query = $this->query;
-        $cats = $query->get_data_select('categories',null,'Uncategories');
-        return view('auth.admin.products.add',compact('query','cats'));
+        $cats = $query->get_data_array('categories');
+        // $cats = $query->get_data_select('categories',null,'Uncategories');
+        $brands = $query->get_data_array('brands');
+        return view('auth.admin.products.add',compact('query','cats','brands'));
     }
 
     public function product_insert()
     {
         // return dd(\Request::file('images'));
         $rules = [
-            'category_id'=>'required',
+            'category_id'=>'required|exists:categories,id',
+            'brand_id'=>'required|exists:brands,id',
             'title'=>'required|unique:news,title',
             'meta_description'=>'required',
             'meta_keywords'=>'required',
@@ -416,9 +453,15 @@ class AdminController extends Controller
                 Image::make($url.$filename)->fit(400,400)->save($url.$filename);
                 $recommended = (\Request::has('recommended'))? 1 : 0;
                 $special = (\Request::has('special'))? 1 : 0;
+                $top_category = 0;
+                if(\Request::has('top_category')){
+                    $top_category = 1;
+                }
 
                 $pro = new Product;
                 $pro->category_id = \Request::input('category_id');
+                $pro->brand_id = \Request::input('brand_id');
+                $pro->top_category = $top_category;
                 $pro->title = \Request::input('title');
                 $pro->slug = $slug;
                 $pro->meta_description = \Request::input('meta_description');
@@ -481,9 +524,11 @@ class AdminController extends Controller
         $query = $this->query;
         $product = $query->get_data('products',['id'=>$id]);
         if($product->count() == 1){
-            $cats = $query->get_data_select('categories',null,'Uncategories');
+            $cats = $query->get_data_array('categories');
+            $brands = $query->get_data_array('brands');
+            // $cats = $query->get_data_select('categories',null,'Uncategories');
             $images = $query->get_data('product_images',['product_id'=>$id]);
-            return view('auth.admin.products.edit',compact('query','cats','product','images'));
+            return view('auth.admin.products.edit',compact('query','cats','product','images','brands'));
         }else{
             return \Redirect::action('AdminController@products')->with('message_error','ID not found');
         }
@@ -493,7 +538,8 @@ class AdminController extends Controller
     {
         $rules = [
             'id'=>'required|exists:products,id',
-            'category_id'=>'required',
+            'category_id'=>'required|exists:categories,id',
+            'brand_id'=>'required|exists:brands,id',
             'title'=>'required|unique:news,title',
             'meta_description'=>'required',
             'meta_keywords'=>'required',
@@ -508,6 +554,10 @@ class AdminController extends Controller
             $image = \Request::file('cover');
             $recommended = (\Request::has('recommended'))? 1 : 0;
             $special = (\Request::has('special'))? 1 : 0;
+            $top_category = 0;
+            if(\Request::has('top_category')){
+                $top_category = 1;
+            }
             $filename = $query->get_field_data('products',['id'=>$id],'cover');
             $slug = $query->get_field_data('products',['id'=>$id],'slug');
             if(\Request::hasFile('cover')){
@@ -521,6 +571,8 @@ class AdminController extends Controller
             }
             $data = [
                 'category_id'=>\Request::input('category_id'),
+                'brand_id'=>\Request::input('brand_id'),
+                'top_category'=>$top_category,
                 'title'=>\Request::input('title'),
                 'slug'=>$slug,
                 'meta_description'=>\Request::input('meta_description'),
@@ -1087,4 +1139,80 @@ class AdminController extends Controller
             return \Redirect::action('AdminController@contact_reply',['id'=>\Request::input('id')])->withErrors($valid);
         }
     }
+
+    public function brands()
+    {
+        $query = $this->query;
+        $brands = $query->get_paginate('brands',15);
+        return view('auth.admin.products.brands',compact('query','brands'));
+    }
+
+    public function brand_insert()
+    {
+        $rules = ['name'=>'required|unique:brands,name','icon'=>'required|image'];
+        $valid = \Validator::make(\Request::all(),$rules);
+        if($valid->passes()){
+            $name  = \Request::input('name');
+            $slug = str_slug($name);
+            $icon = \Request::file('icon');
+            $filename = $slug.'.'.$icon->getClientOriginalExtension();
+            $path = 'images/brands';
+            if($icon->move($path,$filename)){
+                Image::make($path.'/'.$filename)->fit(150,50)->save($path.'/'.$filename);
+                $data = ['name'=>$name, 'slug'=>$slug,'icon'=>$filename];
+                $this->query->insert_data('brands',$data);
+                return \Redirect::action('AdminController@brands')->with('message_success','Data successfully saved');
+            }else{
+                return \Redirect::action('AdminController@brands')->with('message_error','failed to update icon');
+            }
+        }else{
+            return \Redirect::action('AdminController@brands')->withErrors($valid);
+        }
+    }
+
+    public function brand_update()
+    {
+        $rules = ['name'=>'required','id'=>'required|exists:brands,id'];
+        $valid = \Validator::make(\Request::all(),$rules);
+        if($valid->passes()){
+            $id  = \Request::input('id');
+            $name  = \Request::input('name');
+            $query = $this->query;
+            $slug = str_slug($name);
+            $filename = $query->get_field_data('brands',['id'=>$id],'icon');
+            $path = 'images/brands';
+            if(\Request::hasFile('icon')){
+                if(File::exists($path.'/'.$filename)){
+                    unlink($path.'/'.$filename);
+                }
+                $icon = \Request::file('icon');
+                $filename = $slug.'.'.$icon->getClientOriginalExtension();
+                $icon->move($path,$filename);
+                Image::make($path.'/'.$filename)->fit(150,50)->save($path.'/'.$filename);
+            }
+            $data = ['name'=>$name, 'slug'=>$slug,'icon'=>$filename];
+            $this->query->update_data('brands',['id'=>$id],$data);
+            return \Redirect::action('AdminController@brands')->with('message_success','Data successfully saved');
+        }else{
+            return \Redirect::action('AdminController@brands')->withErrors($valid);
+        }
+    }
+
+    public function brand_delete()
+    {
+        $rules = ['id'=>'required|exists:brands,id'];
+        $valid = \Validator::make(\Request::all(),$rules);
+        if($valid->passes()){
+            $id = \Request::input('id');
+            $filename = $this->query->get_field_data('brands',['id'=>$id],'icon');
+            if(File::exists('images/brands/'.$filename)){
+                unlink('images/brands/'.$filename);
+            }
+            $this->query->delete_data('brands',['id'=>$id]);
+            return \Redirect::action('AdminController@brands')->with('message_success','Data successfully deleted');
+        }else{
+            return \Redirect::action('AdminController@brands')->withErrors($valid);
+        }
+    }
+
 }

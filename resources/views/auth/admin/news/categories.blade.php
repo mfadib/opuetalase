@@ -53,7 +53,7 @@
 					</tr>
 				</thead>
 				<tbody>
-			@foreach($categories->get() as $item)
+			@foreach($categories as $item)
 					<tr>
 						{!! Form::open(['action'=>'AdminController@news_category_update','method'=>'post']) !!}
 						<td>
@@ -78,5 +78,6 @@
 				</tbody>
 			</table>
 		</div>
+		{!! $categories->links() !!}
 	</div>
 @endsection

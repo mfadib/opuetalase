@@ -8,6 +8,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 use File;
 use DB;
+use URL;
 use Session;
 use Auth;
 use Query;
@@ -33,6 +34,21 @@ class UserQuery{
 		}
 
 		return $table;
+	}
+
+	public function get_filter($range =false,$brands = false, $categories = false,$limit = 20,$order='created_at',$type='desc')
+	{
+		$table = DB::table('products');
+		if($range != false){
+			$table->whereBetween('price',[1000,$range]);
+		}
+		if(is_array($brands)){
+			$table->whereIn('brand_id',$brands);
+		}
+		if(is_array($categories)){
+			$table->whereIn('category_id',$categories);
+		}
+		return $table->simplePaginate($limit);
 	}
 
 	public function get_data_multiwhere($table,$where=null,$field='id', $opt = null){
@@ -385,6 +401,45 @@ class UserQuery{
 		}
 		return $str;
 	}
+
+	public function get_rate($id)
+	{
+		$check = DB::table('reviews')->where(['product_id'=>$id]);
+		if($check->count() == 0){
+			return "<center><span class=\"rate0\" title=\"not found rate\"></span></center>";
+		}else{
+			$rate = ceil($check->avg('quality_product'));
+			$title = $this->get_review($rate);
+			return "<center><span class=\"rate$rate\" title=\"$title\"></span></center>";
+		}
+	}
+
+	public function get_detail_product($slug, $image,$minheight = "160px")
+ 	{
+ 		$link = URL::action('ProductController@detail',['slug'=>$slug]);
+ 		$wishlist = URL::action('ProductController@wishlist',['slug'=>$slug]);
+ 	    return "<div class=\"bg open-hidden\" style=\"height: $minheight; width: 100%; background: url('$image'); background-size: cover; background-position: center;\">
+                 <div class=\"this-hidden none\" style=\"background: rgba(0,0,0,0.4); height: 100%; width: 100%;\">
+                   <div class=\"cw\">
+                     <div class=\"wicon right\">
+                       <div class=\"mr10 mt10\" style=\"margin-left: 40px;\">
+                         <span class=\"fa-stack fa-lg open-btn-compare\"><a href=\"$link\" title=\"Product detail\" class=\"cw\">
+                           <i class=\"fa fa-circle-thin fa-stack-2x\"></i>
+                           <i class=\"fa fa-eye fa-stack-1x\"></i></a>
+                         </span>
+                       </div>
+ 
+                       <div style=\"margin-top: -36px\">
+                         <span class=\"fa-stack fa-lg\"><a href=\"$wishlist\" title=\"Wishlist\" class=\"cw\">
+                           <i class=\"fa fa-circle-thin fa-stack-2x\"></i>
+                           <i class=\"fa fa-heart fa-stack-1x\"></i></a>
+                         </span>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>";
+ 	}
 
 }
 

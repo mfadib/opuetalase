@@ -20,7 +20,6 @@ class SettingComposer
 	public function compose(View $view)
 	{
 		$view
-		// ->with('userprofile',$this->userprofile())
 			->with('webprofile',$this->webprofile())
 			->with('getquery',$this->getquery())
 			->with('productlatests',$this->productlatests())
@@ -57,13 +56,4 @@ class SettingComposer
 	{
 		return DB::table('contacts')->where(['status'=>0])->count();
 	}
-	// private function userprofile()
-	// {
-	// 	return DB::table('users')->where([
-	// 			'id'	=> Auth::user()->id,
-	// 			'email'	=> Auth::user()->email,
-	// 			'status'=> Auth::user()->status,
-	// 			'actived'=> Auth::user()->actived
-	// 		])->get();
-	// }
 }

@@ -17,11 +17,12 @@
 				<table class="table">
 					<thead>
 						<tr>
+							<th style="width:20%;">Category</th>
 							<th style="width:35%;">Title</th>
-							<th style="width:40%;">How to buy</th>
+							<th style="width:20%;">How to buy</th>
 							<th style="width:5%;text-align:center;">Reviews</th>
+							<th style="width:5%;text-align:center;">Top Week</th>
 							<th style="width:5%;text-align:center;">Recommended</th>
-							<th style="width:5%;text-align:center;">Special</th>
 							<th style="width:5%;text-align:center;">Edit</th>
 							<th style="width:5%;text-align:center;">Delete</th>
 						</tr>
@@ -29,6 +30,7 @@
 					<tbody>
 						@foreach($products as $item)
 						<tr>
+							<td>{{$query->get_field_data('categories',['id'=>$item->category_id],'name')}}</td>
 							<td>{{$item->title}}</td>
 							<td>{!! $item->how_to_buy !!}</td>
 							<td style="text-align:center;">{!! $query->get_data('reviews',['product_id'=>$item->id])->count() !!}</td>
@@ -45,8 +47,8 @@
 						@endforeach
 					</tbody>
 				</table>
-				{!! $products->links() !!}
 			</div>
 		</div>
+		{!! $products->links() !!}
 	</div>			
 @endsection

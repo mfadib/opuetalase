@@ -9,13 +9,13 @@
           <div class="cb2 left" style="text-align: center; width: 34px; height: 34px">
             <button type="submit" class="fa fa-search fa-lg" style="padding: 10px;"></button>
           </div>
-        {!! Form::close() !!}
         <div class="right" style="margin-top: -14px">
-          <button type="button" class="navbar-toggle collapsed cb2" onclick="show('sticky-hid-768')">
+          <button type="button" class="navbar-toggle collapsed cb" onclick="show('sticky-hid-768')">
             <span class="sr-only">Toggle navigation</span>
             <span class="fa fa-bars fa-2x" style="text-align: right;"></span>
           </button>
         </div>
+        {!! Form::close() !!}
       </div>
 
        
@@ -242,16 +242,51 @@
 
             <div class="bg4 p10" style="margin-top: -15px">
               <div class="p10 bg5">
-                    <a href="{{URL::action('ProductController@index')}}" title="Product" class="cb"><span class="fa fa-bars p5 br1 pr10"></span><b class="ml5">CATEGORY</b></a>
+                <div class="dropdown">
+                  <div data-toggle="dropdown">
+                    <div onclick="show2('list_cat')">
+                      <span class="fa fa-bars p5 br1 pr10"></span>
+                      <span class="mr15"> <b class="ml5">CATEGORY</b></span>
+                      <span class="caret right mt10"></span>
+                    </div>
+                  </div>
+                  <div class="p5 none" id="list_cat">
+                  @foreach($menu_categories->get() as $master)
+                  <?php $childs = $getquery->get_data('categories',['parent'=>$master->id]); ?>
+                  <div class="p10" style="border-bottom: 1px solid #ddd;">
+                    <div>
+                        <a href="{{URL::action('ProductController@category',['slug'=>$master->slug])}}" title="{{$master->name}}" class="cb">
+                        @if($childs->count() != 0)
+                          <span class="fa fa-bars p5 br1 pr10"></span>
+                          <span class="fa fa-caret-down right" onclick="show2('sub_category_parent_'{{$master->id}})"></span>
+                        @endif
+                        <b class="ml5">{{$master->name}}</b></a>
+                    </div>
+                    @if($childs->count() != 0)
+                    <div class="none" id="sub_category_parent_{{$master->id}}" style="display: none;">
+                    @foreach($childs->get() as $child)
+                        <div class="p10" style="border-bottom: 1px solid #ddd;">
+                          <div>
+                            <a href="{{URL::action('ProductController@category',['slug'=>$child->slug])}}" title="{{$child->name}}" class="cb"><b class="ml5">{{$child->name}}</b></a>
+                          </div>
+                        </div>
+                    @endforeach
+                    </div>
+                    @endif
+                  </div>
+                  @endforeach
+                  </div>
+                </div>
               </div>
-            </div>
 
+            </div>
+<!-- 
             <div class="bg4 p10" style="margin-top: -15px">
               <div class="p10 bg5">
                     <a href="{{URL::action('ProductController@index')}}" title="Product" class="cb"><span class="fa fa-file p5 br1 pr10"></span><b class="ml5">PRODUCST</b></a>
               </div>
             </div>
-
+ -->
             <div class="bg4" style="width: 100%; margin-top: -20px">
               <div class="p10">
                 <div class="bg5 p10">

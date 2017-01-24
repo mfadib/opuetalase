@@ -30,10 +30,11 @@
                     <li>
                         <a href="#"><i class="fa fa-bars fa-fw"></i> Products<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a href="{{URL::action('AdminController@product_categories')}}">Categories</a></li>
                             <li><a href="{{URL::action('AdminController@product_add')}}">Add Product</a></li>
                             <li><a href="{{URL::action('AdminController@products')}}">List Products</a></li>
                             <li><a href="{{URL::action('AdminController@product_reviews')}}">Reviews</a></li>
+                            <li><a href="{{URL::action('AdminController@brands')}}">Brands</a></li>
+                            <li><a href="{{URL::action('AdminController@product_categories')}}">Categories</a></li>
                         </ul>
                         <!-- second-level-items -->
                     </li>
