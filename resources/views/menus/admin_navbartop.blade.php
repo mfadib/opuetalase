@@ -9,8 +9,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">
-                    <img src="{{URL::asset('images/logo.jpg')}}" alt="" />
+                <a class="navbar-brand" href="{{URL::action('AdminController@home')}}">
+                    <img src="{{URL::asset('assets/images/logo.png')}}" alt="" />
                 </a>
             </div>
             <!-- end navbar-header -->
