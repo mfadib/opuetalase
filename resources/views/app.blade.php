@@ -6,10 +6,18 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
       <title>@yield('title_site',$web->title)</title>
+<<<<<<< HEAD
       <link rel="icon" href="{{URL::asset('images/'.$web->icon)}}"/>
       <meta name="author" content="@yield('meta_author',$web->author)"/>
 	<meta name="description" content="@yield('meta_description',$web->meta_description)" />
 	<meta name="keywords" content="@yield('meta_keywords',$web->meta_keywords)" />
+=======
+      <meta name="author" content="@yield('meta_author',$web->author)"/>
+      <meta name="description" content="@yield('meta_description',$web->meta_description)"/>
+      <meta name="keywords" content="@yield('meta_keywords',$web->meta_keywords)"/>
+      
+      <link rel="icon" href="{{URL::asset('images/'.$web->icon)}}"/>
+>>>>>>> 6097d6d6c07a192914c3e1c31d69b437057cad9b
       <meta name="application-name" content="Benhul Shop"/>
       <meta name="viewport" content="user-scalable=0,width=device-width,initial-scale=1,maximum-scale=1">
 

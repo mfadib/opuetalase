@@ -5,9 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title_site','Admin area') | {{$item->title}}</title>
+<<<<<<< HEAD
 <meta name="author" content="@yield('meta_author',$item->author)"/>
     <meta name="description" content="@yield('meta_description',$item->meta_description)" />
     <meta name="keywords" content="@yield('meta_keywords',$item->meta_keywords)"/>
+=======
+    <meta name="author" content="@yield('meta_author',$item->author)">
+    <meta name="description" content="@yield('meta_description',$item->meta_description)">
+    <meta name="keywords" content="@yield('meta_keywords',$item->meta_keywords)">
+>>>>>>> 6097d6d6c07a192914c3e1c31d69b437057cad9b
     <!-- Core CSS - Include with every page -->
     <link href="{{URL::asset('backend/plugins/bootstrap/bootstrap.css')}}" rel="stylesheet" />
     <link href="{{URL::asset('backend/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />
