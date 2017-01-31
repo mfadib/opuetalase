@@ -5,14 +5,27 @@
       <meta charset="UTF-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-      <title>BENHUL SHOP</title>
+      <title>@yield('title_site',$web->title)</title>
       <link rel="icon" href="{{URL::asset('images/'.$web->icon)}}"/>
-      <meta name="author" content="SMARTEK Developer | RESKY ADI NUGRAHA"/>
+      <meta name="author" content="@yield('meta_author',$web->author)"/>
+	<meta name="description" content="@yield('meta_description',$web->meta_description)" />
+	<meta name="keywords" content="@yield('meta_keywords',$web->meta_keywords)" />
       <meta name="application-name" content="Benhul Shop"/>
       <meta name="viewport" content="user-scalable=0,width=device-width,initial-scale=1,maximum-scale=1">
 
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+      <!-- Latest compiled and minified CSS -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+      <!-- Optional theme -->
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+      <!-- Latest compiled and minified JavaScript -->
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
       <!-- Pllugins -->
-      <link rel="stylesheet" href="{{URL::asset('assets/css/bs/css/bootstrap.css')}}">
+<!--      <link rel="stylesheet" href="{{URL::asset('assets/css/bs/css/bootstrap.css')}}"> -->
       <link rel="stylesheet" href="{{URL::asset('assets/css/fa/css/font-awesome.css')}}">
       <link rel="stylesheet" href="{{URL::asset('assets/css/flag/css/flag-icon.css')}}">
       <link rel="stylesheet" type="text/css" href="{{URL::asset('assets/css/jquery.rateyo.css')}}">
@@ -24,14 +37,15 @@
       <link rel="stylesheet" href="{{URL::asset('assets/css/fonts.css')}}">
 
       <!-- Script -->
-      <!-- <script src="{{URL::asset('assets/js/jquery.js')}}"></script> -->
-      <script src="{{URL::asset('assets/js/jquery-3.1.1.min.js')}}"></script>
+      <!-- <script src="{{URL::asset('assets/js/jquery.js')}}"></script>
+      <script src="{{URL::asset('assets/js/jquery-3.1.1.min.js')}}"></script> -->
       <!-- <script src="{{URL::asset('assets/js/jquery-ui.min.js')}}"></script> -->
       <script src="{{URL::asset('assets/js/jquery-ui.js')}}"></script>
-      <script src="{{URL::asset('assets/js/custom.js')}}"></script>
+     <script src="{{URL::asset('assets/js/custom.js')}}"></script>
       <script src="{{URL::asset('assets/css/bs/js/bootstrap.js')}}"></script>
       <script src="{{URL::asset('assets/js/jssor.slider-21.1.6.mini.js')}}" type="text/javascript"></script>
       <script src="{{URL::asset('assets/js/jquery.rateyo.js')}}"></script>
+      <script src="{{URL::asset('assets/js/zoom/jquery.elevatezoom.js')}}"></script>
     @endforeach
     @yield("header")
     </head>
@@ -43,7 +57,7 @@
       <div id="header">
         @include("menus.header")
       </div>
-      
+
       <!-- BreadCrumb -->
       @yield('titlebar')
 
@@ -62,7 +76,7 @@
               <div class="col-md-12 col-xs-12 p10" style="margin-top: -20px">
               @endif
             @endif
-                @yield("content") 
+                @yield("content")
             </div>
 
 

@@ -23,3 +23,9 @@
     width: 260px;
   }
 }
+
+@media (max-width: 480px) {
+  .slider480{
+    margin-top: 50px;
+  }
+}

@@ -30,6 +30,13 @@
             @endif */ ?>
           </div>
         </div>
+        <script type="text/javascript">
+          $("#zoom").elevateZoom({
+            zoomType        : "lens",
+            lensShape : "round",
+            lensSize    : 120
+          });
+        </script>
 
         <div class="col-md-4">
           <div class="p10 bordash">

@@ -2,7 +2,7 @@
 @section('content')
             
       <div class="row first-content">
-        <center><div class="col-xs-12 col-md-12" style="max-width: 1360px; margin: 0 auto;">
+        <center><div class="col-xs-12 col-md-12 slider480" style="max-width: 1360px;">
 
         <style>
             .jssorb05 {
@@ -121,7 +121,6 @@
             <div class="tc f16 tc"><a href="{{URL::action('ProductController@category',['slug'=>$query->get_field_data('categories',['id'=>$item->category_id],'slug')])}}" title="Category" class="cb">{{$query->get_field_data('categories',['id'=>$item->category_id],'name')}}</a></div>
             {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
             <div class="mt5">
-
               <div class="tc fprod">{{$query->get_ellipsis($item->title,30)}}</div>
               {!!$query->get_rate($item->id)!!}
               <div class="tc fprod mt5"><b>{{$query->currency_format($item->price)}}</b></div>
@@ -147,7 +146,7 @@
               <div class="col-md-3 col-sm-4 col-xs-6 p10">
                 <div class="p10 bordash">
                   {!! $query->get_detail_product($item->slug,URL::asset('images/products/'.$item->cover)) !!}
-                  <a href="{{url('product/detail/'.$item->slug)}}">
+                  <a href="{{URL::action('ProductController@detail',['slug'=>$item->slug])}}">
                   <div class="tc fprod">{{$query->get_ellipsis($item->title,25)}}</div>
                   {!!$query->get_rate($item->id)!!}
                   <div class="tc fprod"><b>{{$query->currency_format($item->price)}}</b></div>
@@ -247,7 +246,7 @@
       <!-- Recomended -->
 
       <div class="row mt40" style="border-top: 1px solid #666">
-        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">RECOMMENDED PRODUCTS</div></center>
+        <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">RECOMMENDED</div></center>
       </div>
 
       <div class="row mt20">
@@ -264,7 +263,7 @@
         @endforeach
         </div>
       </div>
-
+      
 
       <div class="row mt40" style="border-top: 1px solid #666">
         <center><div class="f16" style="width: 240px; background: #fff; margin-top: -14px;">NEW BRANDS</div></center>
@@ -295,7 +294,6 @@
           <div class="col-md-4 col-sm-4 p10">
             <div class="p10 bordash">
               <center>
-                <!-- <div class="round bg" style="margin-top: -50px; background: url('assets/images/testimoni/1.png'); background-size: cover"></div> -->
                 <div class="f16 mt5"><b>{!! ucwords($query->get_field_data('users',['id'=>$testi->user_id],'name')) !!}</b></div>
               </center>
               <!-- <center><span class="rate"></span></center> -->
@@ -313,4 +311,54 @@
 
         </div>
       </div>
+@endsection
+
+@section('footer')
+<script type="text/javascript">
+    jQuery(document).ready(function ($) {
+
+        var jssor_1_SlideoTransitions = [
+          [{b:-1,d:1,o:-1},{b:0,d:1000,o:1}],
+          [{b:1900,d:2000,x:-379,e:{x:7}}],
+          [{b:1900,d:2000,x:-379,e:{x:7}}],
+          [{b:-1,d:1,o:-1,r:288,sX:9,sY:9},{b:1000,d:900,x:-1400,y:-660,o:1,r:-288,sX:-9,sY:-9,e:{r:6}},{b:1900,d:1600,x:-200,o:-1,e:{x:16}}]
+        ];
+
+        var jssor_1_options = {
+          $AutoPlay: true,
+          $SlideDuration: 800,
+          $SlideEasing: $Jease$.$OutQuint,
+          $CaptionSliderOptions: {
+            $Class: $JssorCaptionSlideo$,
+            $Transitions: jssor_1_SlideoTransitions
+          },
+          $ArrowNavigatorOptions: {
+            $Class: $JssorArrowNavigator$
+          },
+          $BulletNavigatorOptions: {
+            $Class: $JssorBulletNavigator$
+          }
+        };
+
+        var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+        /*responsive code begin*/
+        /*you can remove responsive code if you don't want the slider scales while window resizing*/
+        function ScaleSlider() {
+            var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+            if (refSize) {
+                refSize = Math.min(refSize, 1920);
+                jssor_1_slider.$ScaleWidth(refSize);
+            }
+            else {
+                window.setTimeout(ScaleSlider, 30);
+            }
+        }
+        ScaleSlider();
+        $(window).bind("load", ScaleSlider);
+        $(window).bind("resize", ScaleSlider);
+        $(window).bind("orientationchange", ScaleSlider);
+        /*responsive code end*/
+    });
+</script>
 @endsection

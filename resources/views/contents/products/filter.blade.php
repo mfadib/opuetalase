@@ -12,7 +12,7 @@
         </div>
       </div>
 @endsection
-  
+
 @section('content')
 
   <div class="row">
@@ -66,7 +66,7 @@
               </div>
       @endforeach
               </div>
-              
+
               <div class="row">
                 <div class="col-xs-12 col-md-4 right p10">
                   <div class="tr">
@@ -77,5 +77,20 @@
 
             </div>
         </div>
-  </div>  
+  </div>
+  <div class="row">
+    <div class="col-md-3 dis768">
+      <div style="border: 1px solid #ccc">
+        <div class="f16 bg p10 cw">CATEGORY</div>
+          <div class="p10">
+            <div><a href="{{url('products')}}">All Category ({{$query->get_data('products')->count()}})</a></div>
+    @foreach($categories as $item)
+    <div><a href="{{url('product/category/'.$item->slug)}}">{{$item->name}} ({{$query->get_data('products',['category_id'=>$item->id])->count()}})</a></div>
+    @endforeach
+          </div>
+          <hr>
+          @include('menus.filter')
+      </div>
+    </div>
+  </div>
 @endsection

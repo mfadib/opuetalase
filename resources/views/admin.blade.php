@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title_site','Admin area') | {{$item->title}}</title>
+<meta name="author" content="@yield('meta_author',$item->author)"/>
+    <meta name="description" content="@yield('meta_description',$item->meta_description)" />
+    <meta name="keywords" content="@yield('meta_keywords',$item->meta_keywords)"/>
     <!-- Core CSS - Include with every page -->
     <link href="{{URL::asset('backend/plugins/bootstrap/bootstrap.css')}}" rel="stylesheet" />
     <link href="{{URL::asset('backend/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />

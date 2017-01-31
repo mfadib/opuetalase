@@ -89,9 +89,9 @@ function sld(x){
 }
 
 $(document).ready(function(){
-  $("#bot-fix").load("bot-fix.html");
-  $("#header").load("header.html");
-  $("#footer").load("footer.html");
+  // $("#bot-fix").load("bot-fix.html");
+  // $("#header").load("header.html");
+  // $("#footer").load("footer.html");
 
   $(window).scroll(function () {
       if (width > 768) {
