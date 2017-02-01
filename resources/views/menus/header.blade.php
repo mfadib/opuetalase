@@ -186,31 +186,14 @@
                   </div>
                   Profile</a>
                 </div>
-<<<<<<< HEAD
-@elseif(Auth::user()->status == 1)
-=======
               @elseif(Auth::user()->status == 1)
->>>>>>> 6097d6d6c07a192914c3e1c31d69b437057cad9b
                 <div class="bg cw col-xs-4">
                   <a href="{{URL::action('AdminController@home')}}" title="{{Auth::user()->name}}">
                   <div class="p10 radius" style="border: #fff solid 1px; width: 40px">
                     <span class="fa fa-user fa-lg cw"></span>
                   </div>
                   AdminArea</a>
-<<<<<<< HEAD
-                </div>
-              @endif
-                <div class="bg cw left col-xs-4">
-                  <a href="{{URL::action('MemberController@signout')}}" title="Sign Out">
-                    <div class="p10 radius" style="border: #fff solid 1px; width: 40px">
-                      <span class="fa fa-sign-in fa-lg cw"></span>
-                    </div>
-                    Sign Out
-                  </a>
-                </div>
-              
-=======
-                </div>
+               </div>
               @endif
               <div class="bg cw col-xs-4">
                 <a href="{{URL::action('MemberController@signout')}}" title="Sign Out">
@@ -220,7 +203,6 @@
                   Sign Out
                 </a>
               </div>
->>>>>>> 6097d6d6c07a192914c3e1c31d69b437057cad9b
             @else
               <div class="bg cw col-xs-4">
                 <a href="{{URL::action('MemberController@signin')}}" title="Sign In">

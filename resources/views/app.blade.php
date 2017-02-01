@@ -6,18 +6,12 @@
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
       <title>@yield('title_site',$web->title)</title>
-<<<<<<< HEAD
       <link rel="icon" href="{{URL::asset('images/'.$web->icon)}}"/>
       <meta name="author" content="@yield('meta_author',$web->author)"/>
 	<meta name="description" content="@yield('meta_description',$web->meta_description)" />
 	<meta name="keywords" content="@yield('meta_keywords',$web->meta_keywords)" />
-=======
-      <meta name="author" content="@yield('meta_author',$web->author)"/>
-      <meta name="description" content="@yield('meta_description',$web->meta_description)"/>
-      <meta name="keywords" content="@yield('meta_keywords',$web->meta_keywords)"/>
-      
+     
       <link rel="icon" href="{{URL::asset('images/'.$web->icon)}}"/>
->>>>>>> 6097d6d6c07a192914c3e1c31d69b437057cad9b
       <meta name="application-name" content="Benhul Shop"/>
       <meta name="viewport" content="user-scalable=0,width=device-width,initial-scale=1,maximum-scale=1">
 
@@ -60,7 +54,41 @@
 
     <body>
 
-      <div id="bot-fix"></div>
+      <div id="bot-fix">
+	<div class="container">
+		<div class="w-chat">
+		<a href="#" class="cb" id="back-to-top" title="Back to top"><span class="fa fa-caret-up" style="margin-top:12px"></span></a>
+		</div>
+	</div>
+	<script type="text/javascript">
+  $(".close-compare").click(function(){
+    $("#btn-compare").fadeOut();
+  });
+
+  if ($('#back-to-top').length) {
+    // var width = $(window).width();
+    // alert(width);
+    var scrollTrigger = 100, // px
+        backToTop = function () {
+            var scrollTop = $(window).scrollTop();
+            if (scrollTop > scrollTrigger) {
+                $('#back-to-top').addClass('show');
+            } else {
+                $('#back-to-top').removeClass('show');
+            }
+        };
+    backToTop();
+    $(window).on('scroll', function () {
+        backToTop();
+    });
+    $('#back-to-top').on('click', function (e) {
+        e.preventDefault();
+        $('html,body').animate({
+            scrollTop: 0
+        }, 700);
+    });
+  } </script>
+</div>
 
       <div id="header">
         @include("menus.header")
